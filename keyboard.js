@@ -114,13 +114,14 @@ function handleKeyPress(key) {
             const cursorPosition = input.selectionStart;
             const value = input.value;
             if (cursorPosition < value.length) {
-            // Если курсор не находится в конце строки
-            input.value = value.substring(0, cursorPosition) + value.substring(cursorPosition + 1);
-            input.setSelectionRange(cursorPosition, cursorPosition);
-            } else {
-            // Если курсор находится в конце строки
-            input.value = value.substring(0, cursorPosition);
-            input.setSelectionRange(cursorPosition, cursorPosition);
+                // Если курсор не находится в конце строки
+                input.value = value.substring(0, cursorPosition) + value.substring(cursorPosition + 1);
+                input.setSelectionRange(cursorPosition, cursorPosition);
+            } else if (cursorPosition === value.length && value.length > 0) {
+                // Если курсор находится в конце строки и строка не пустая
+                const newValue = value.substring(0, cursorPosition - 1);
+                input.value = newValue;
+                input.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
             }
             break;
         case 'Backspace':
@@ -135,6 +136,14 @@ function handleKeyPress(key) {
             });
             break;
         case 'Shift':
+            // do nothing, the shift key is only used for changing the keyboard layout
+            // if the shift key is pressed, switch to the other keyboard layout
+            currentLayout = currentLayout === 'en' ? 'ru' : 'en';
+            //add lang to query string
+            setLang(currentLayout);
+            createKeyboard(keyboardLayouts[currentLayout]);
+            break;
+        case 'RightShift':
             // do nothing, the shift key is only used for changing the keyboard layout
             // if the shift key is pressed, switch to the other keyboard layout
             currentLayout = currentLayout === 'en' ? 'ru' : 'en';
@@ -180,6 +189,12 @@ document.addEventListener('keydown', event => {
     const key = event.key.toLowerCase();
 
     if (key === 'shift') {
+        // if the shift key is pressed, switch to the other keyboard layout
+        currentLayout = currentLayout === 'en' ? 'ru' : 'en';
+        // add lang to query string
+        setLang(currentLayout);
+        createKeyboard(keyboardLayouts[currentLayout]);
+    } else if (key === 'rightshift') {
         // if the shift key is pressed, switch to the other keyboard layout
         currentLayout = currentLayout === 'en' ? 'ru' : 'en';
         // add lang to query string
