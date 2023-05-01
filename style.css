@@ -54,10 +54,13 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    opacity: 0.6;
+}
+
 button.active {
     /* background: #796e6e; */
-    opacity: 0.6;
-    
+    opacity: 0.6;    
 }
 
 textarea {
