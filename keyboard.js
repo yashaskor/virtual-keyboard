@@ -1,14 +1,14 @@
 const keyboardLayouts = {
     en: [
         ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
-        ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+        ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del'],
         ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter'],
         ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '⯅', 'RightShift'],
         ['Control', 'Alt', 'Space', 'Alt', 'Control', '⯇', '⯆', '⯈']
     ],
     ru: [
         ['ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
-        ['Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\'],
+        ['Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Del'],
         ['CapsLock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter'],
         ['Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', '⯅', 'RightShift'],
         ['Control', 'Alt', 'Space', 'Alt', 'Control', '⯇', '⯆', '⯈']
@@ -109,6 +109,20 @@ function createKeyboard(layout) {
 function handleKeyPress(key) {
     // debugger
     switch (key) {
+        case 'Del':
+            const input = document.getElementById('output');
+            const cursorPosition = input.selectionStart;
+            const value = input.value;
+            if (cursorPosition < value.length) {
+            // Если курсор не находится в конце строки
+            input.value = value.substring(0, cursorPosition) + value.substring(cursorPosition + 1);
+            input.setSelectionRange(cursorPosition, cursorPosition);
+            } else {
+            // Если курсор находится в конце строки
+            input.value = value.substring(0, cursorPosition);
+            input.setSelectionRange(cursorPosition, cursorPosition);
+            }
+            break;
         case 'Backspace':
             output.value = output.value.slice(0, -1);
             break;
